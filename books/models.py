@@ -22,10 +22,14 @@ class Wishlist(models.Model):
     user = models.OneToOneField("User", on_delete=models.CASCADE, related_name="user_wishlist")
     books = models.ManyToManyField(Books)
 
+    def __str__(self) -> str:
+        return f"{self.user}: {self.books}"
+
+
 class User(AbstractUser):
     avatar = models.ImageField(upload_to="media/", default=None, null=True, blank=True)
-    books = models.ManyToManyField(Books)
-    wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name="books_wishlist")
+    books = models.ManyToManyField(Books, null=True)
+    wishlist = models.ForeignKey(Wishlist, null=True, on_delete=models.CASCADE, related_name="books_wishlist")
 
     def __str__(self):
         return self.username

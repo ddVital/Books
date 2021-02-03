@@ -1,0 +1,30 @@
+{% extends "books/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+        <div id="login-and-register">
+            <div id="login-form">
+                <form action="{% url 'login' %}" method="POST">
+                    <h1>Login</h1>
+                    {% csrf_token %}
+                    <input autofocus class="input-fields" type="text" name="username" placeholder="Username" autocomplete="off">
+                    <div class="input-fields" id="password-field">
+                        <input type="password" name="password" id="old-password" placeholder="Password">
+                        <a href="password_reset" id="forgot">Forgot?</a>
+                    </div>
+                    {% if message %}
+                        <span id="error-msg">{{ message }}</span>
+                    {% endif %}
+                    <input class="submit-bnt" id="login-bnt" type="submit" value="Login">
+                </form>
+
+                <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
