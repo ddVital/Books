@@ -1,0 +1,9 @@
+{% load static %}
+
+{% if books %}
+    {% for book in books.items %}
+        <div class="book">
+            <p>{{ book.volumeInfo.title }}</p>
+        </div>
+    {% endfor %}
+{% endif %}

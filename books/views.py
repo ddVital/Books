@@ -1,4 +1,4 @@
-import os, re
+import os, re, requests
 from django.shortcuts import render
 
 from django import forms
@@ -6,13 +6,28 @@ from django.contrib.auth import authenticate, update_session_auth_hash, login, l
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
 from .models import Books, User
 
 
 # index function
 def index(request):
-    return render(request, 'books/index.html')
+    
+    return render(request, 'books/index.html', {
+        "books": API_request("math")
+    })
+
+
+def API_request(search):
+    r = requests.get(f'https://www.googleapis.com/books/v1/volumes?q={search}&maxResults=40')
+    data = r.json()
+    return data
+
+
+def search(request):
+    search = request.GET.get('q')
+    return render(request, 'books/index.html', {
+        "books": API_request(search)
+    })
 
 
 def login_view(request):

@@ -3,5 +3,5 @@
 {% block title %} Home {% endblock %}
 
 {% block body %} 
-    <h1>Hello, {{ a }}</h1>
+    {% include "modules/books.html" with books=books %}
 {% endblock %}
