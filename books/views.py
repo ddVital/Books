@@ -1,20 +1,38 @@
 import os, re, requests
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
+from django.db import IntegrityError
 from django import forms
 from django.contrib.auth import authenticate, update_session_auth_hash, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from .models import Books, User
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import Books, User, Wishlist
 
 
 # index function
 def index(request):
-    
+    user = User.objects.get(username=request.user.username)
     return render(request, 'books/index.html', {
-        "books": API_request("math")
+        "books": API_request("why we sleep"),
+        "read_books": read_books(user),
+        "want_to_read": want_to_read(user)
     })
+
+
+def read_books(user):
+    read_books = []
+    for book in user.books.all():
+        read_books.append(book.id)
+    return read_books
+
+
+def want_to_read(user):
+    wishlist = Wishlist.objects.get(user=user)
+    want_to_read = []
+    for book in wishlist.books.all():
+        read_books.append(book.id)
+    return want_to_read
 
 
 def API_request(search):
@@ -23,10 +41,19 @@ def API_request(search):
     return data
 
 
+def get_specific_book(id):
+    r = requests.get(f'https://www.googleapis.com/books/v1/volumes/{id}')
+    data = r.json()
+    return data
+
+
 def search(request):
     search = request.GET.get('q')
+    user = User.objects.get(username=request.user.username)
+
     return render(request, 'books/index.html', {
-        "books": API_request(search)
+        "books": API_request(search),
+        "read_books": read_books(user),
     })
 
 
@@ -72,7 +99,7 @@ def password_check(password):
     # searching for lowercase
     lowercase_error = re.search(r"[a-z]", password) is None
 
-    # searching for symbols
+    # searching for symbolswishlist=''
     symbol_error = re.search(r"\W", password) is None
 
     # overall result
@@ -94,12 +121,18 @@ def register(request):
             return render(request, "auth/register.html", {
                 "message": "Passwords must match."
             })
+        
+        if password == '' or confirmation == '' or username == '' or email == '':
+            return render(request, "auth/register.html", {
+                "message": "please fill all the fields."
+            })
 
         # Attempt to create new user
         if password_check(password):
             try:
-                user = User.objects.create_user(username, email, password)
+                user = User.objects.create_user(username.lower(), email.lower(), password)
                 user.save()
+                user.wishlist = Wishlist(user=user).save()
             except IntegrityError:
                 return render(request, "auth/register.html", {
                     "message": "Username already taken."
@@ -108,3 +141,60 @@ def register(request):
             return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auth/register.html")
+
+
+def create_book(id):
+    book = get_specific_book(id)
+    new_book = Books()
+    
+    new_book.id = book["id"]
+    new_book.cover = book["volumeInfo"]["imageLinks"]["thumbnail"]
+    new_book.title = book["volumeInfo"]["title"]
+    new_book.authors = book["volumeInfo"]["authors"]
+    new_book.pages = book["volumeInfo"]["pageCount"]
+    new_book.save()
+
+
+def add_to_read_books(request, id):
+    user = User.objects.get(username=request.user.username)
+
+    if Books.objects.filter(pk=id):
+        book = Books.objects.get(pk=id)
+        user.books.add(book)
+    else:
+        create_book(id)
+        book = Books.objects.get(pk=id)
+        user.books.add(book)
+
+    return HttpResponseRedirect(reverse("index"))    
+
+
+def remove_from_read_books(request, id):
+    user = User.objects.get(username=request.user.username)
+    book = Books.objects.get(pk=id)
+    user.books.remove(book)
+    return HttpResponseRedirect(reverse("index"))    
+
+
+def add_to_want_to_read(request, id):
+    user = User.objects.get(username=request.user.username)
+    
+    if Wishlist.objects.filter(user=user):
+        wishlist = Wishlist.objects.get(user=user)
+        book = Books.objects.get(pk=id)
+        wishlist.books.add(book)
+    else:
+        create_book(id)
+        wishlist = Wishlist(user=user)
+        book = Books.objects.get(pk=id)
+        wishlist.save()
+        wishlist.books.add(book)
+
+    return HttpResponseRedirect(reverse("index"))
+
+
+def remove_from_want_to_read(request, id):
+    user = User.objects.get(username=request.user.username)
+    book = Books.objects.get(pk=id)
+    user.books.remove(book)
+    return HttpResponseRedirect(reverse("index"))

@@ -3,7 +3,38 @@
 {% if books %}
     {% for book in books.items %}
         <div class="book">
+            <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}">
             <p>{{ book.volumeInfo.title }}</p>
+            <p>
+                {% for author in book.volumeInfo.authors %}
+                    {{ author }}, 
+                {% endfor %}
+            </p>
+
+            {% if book.id in read_books %}
+                <form action="{% url 'remove_from_read_books' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>remove read</button>    
+                </form>
+            {% else %}
+                <form action="{% url 'add_to_read_books' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>read</button>    
+                </form>
+            {% endif %}
+
+
+            {% if book.id in want_to_read %}
+                <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>remove want to read</button>    
+                </form>
+            {% else %}
+                <form action="{% url 'add_to_want_to_read' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>Want to read</button>    
+                </form>
+            {% endif %}
         </div>
     {% endfor %}
 {% endif %}
