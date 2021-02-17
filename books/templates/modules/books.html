@@ -4,7 +4,7 @@
     {% for book in books.items %}
         <div class="book">
             <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}">
-            <p class="title" title="{{ book.volumeInfo.title }}">{{ book.volumeInfo.title }}</p>
+            <a href="{% url 'book' book.id %}" class="title" title="{{ book.volumeInfo.title }}">{{ book.volumeInfo.title }}</a>
             <p class="authors">{{ book.volumeInfo.authors|join:', ' }}</p>
 
             {% if book.id in read_books %}

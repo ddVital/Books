@@ -20,6 +20,10 @@ def index(request):
     })
 
 
+def book(request, id):
+    return render(request, 'books/book.html', {"book": get_specific_book(id)})
+
+
 def read_books(user):
     read_books = []
     for book in user.books.all():
