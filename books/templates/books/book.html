@@ -3,5 +3,7 @@
 {% block title %} {{ book.volumeInfo.title }} {% endblock %}
 
 {% block body %}
-    {{ book.volumeInfo.title }}
+    <div class="book-page">
+        {{ book.volumeInfo.title }}
+    </div>
 {% endblock %}

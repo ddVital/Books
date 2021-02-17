@@ -1,0 +1,82 @@
+// sass variables
+$bg-color: #303030;
+$bg-secondary-color: #444444;
+$color: white;
+$secondary-color: #3c28f0
+
+*
+  outline: none
+
+body
+  font-family: 'Comfortaa', cursive
+  background-color: $bg-color
+  color: $color
+
+a
+  color: white
+  text-decoration: none
+
+header
+  display: flex
+  align-items: center
+  justify-content: space-around
+  max-height: 3rem
+  border-bottom: 1px solid $bg-secondary-color
+
+.search
+  margin: 5rem
+  text-align: center
+  input
+    font-family: 'Comfortaa', cursive
+    color: $color
+    background-color: $bg-secondary-color
+    padding: .8rem
+    border: 1px solid black
+  .search-input
+    width: 25rem
+  .search-bnt
+    background-color: $secondary-color
+    &:hover
+      background-color: $color
+      color: $secondary-color
+      transition: linear 1s
+
+.books
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  .book
+    width: 128px
+    margin: 10px
+    padding: 2px
+    border-radius: 5px 5px 0px 5px
+    &:hover
+      background-color: $bg-secondary-color
+
+.cover
+  width: 128px
+  height: 193px
+  // object-fit: cover
+  background-size: cover
+  border-radius: 5px 5px 0px 5px
+
+.title
+  display: block;
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+.authors
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  font-size: .7rem
+
+.book-options
+  display: none
+
+#books-count
+  background-color: $secondary-color
+  font-size: .8rem
+  padding: 3px
+  border-radius: 50px

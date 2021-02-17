@@ -6,15 +6,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
 </head>
 <body>
     <header>
-        {{ user }}
-        <form action="{% url 'search' %}" method="get">
-            <input type="search" name="q">
-            <input type="submit" value="Search">
-        </form>
+        <h1>Logo</h1>
+        <a href="">Settings</a>
+        <a href="">Books</a>
+        <a href="{% url 'want_to_read' %}">Want to read <span id="books-count">{{ user.wishlist.books.count }}</span></a>
+        
+        <i class="fa fa-user"></i>
     </header>
     {% block body %}
     {% endblock %}

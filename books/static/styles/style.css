@@ -1,1 +1,110 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+* {
+  outline: none;
+}
+
+body {
+  font-family: 'Comfortaa', cursive;
+  background-color: #303030;
+  color: white;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  max-height: 3rem;
+  border-bottom: 1px solid #444444;
+}
+
+.search {
+  margin: 5rem;
+  text-align: center;
+}
+
+.search input {
+  font-family: 'Comfortaa', cursive;
+  color: white;
+  background-color: #444444;
+  padding: .8rem;
+  border: 1px solid black;
+}
+
+.search .search-input {
+  width: 25rem;
+}
+
+.search .search-bnt {
+  background-color: #3c28f0;
+}
+
+.search .search-bnt:hover {
+  background-color: white;
+  color: #3c28f0;
+  -webkit-transition: linear 1s;
+  transition: linear 1s;
+}
+
+.books {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.books .book {
+  width: 128px;
+  margin: 10px;
+  padding: 2px;
+  border-radius: 5px 5px 0px 5px;
+}
+
+.books .book:hover {
+  background-color: #444444;
+}
+
+.cover {
+  width: 128px;
+  height: 193px;
+  background-size: cover;
+  border-radius: 5px 5px 0px 5px;
+}
+
+.title {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.authors {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: .7rem;
+}
+
+.book-options {
+  display: none;
+}
+
+#books-count {
+  background-color: #3c28f0;
+  font-size: .8rem;
+  padding: 3px;
+  border-radius: 50px;
+}
+/*# sourceMappingURL=style.css.map */
