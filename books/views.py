@@ -1,5 +1,5 @@
 import os, re, requests
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 
 from django.db import IntegrityError
 from django import forms
@@ -16,7 +16,7 @@ def index(request):
     return render(request, 'books/index.html', {
         "books": API_request("why we sleep"),
         "read_books": read_books(user),
-        "want_to_read": want_to_read(user)
+        "want_to_read": want_to_read_list(user),
     })
 
 
@@ -27,11 +27,11 @@ def read_books(user):
     return read_books
 
 
-def want_to_read(user):
+def want_to_read_list(user):
     wishlist = Wishlist.objects.get(user=user)
     want_to_read = []
     for book in wishlist.books.all():
-        read_books.append(book.id)
+        want_to_read.append(book.id)
     return want_to_read
 
 
@@ -56,6 +56,14 @@ def search(request):
         "read_books": read_books(user),
     })
 
+
+def want_to_read(request):
+    user = User.objects.get(username=request.user.username)
+    books_list = Wishlist.objects.get(user=user)
+    return render(request, "books/want-to-read.html", {
+        "books": books_list,
+    })
+    
 
 def login_view(request):
     if request.method == "POST":
@@ -132,7 +140,7 @@ def register(request):
             try:
                 user = User.objects.create_user(username.lower(), email.lower(), password)
                 user.save()
-                user.wishlist = Wishlist(user=user).save()
+                create_user_wishlist(user)
             except IntegrityError:
                 return render(request, "auth/register.html", {
                     "message": "Username already taken."
@@ -153,6 +161,12 @@ def create_book(id):
     new_book.authors = book["volumeInfo"]["authors"]
     new_book.pages = book["volumeInfo"]["pageCount"]
     new_book.save()
+
+
+def create_user_wishlist(user):
+    Wishlist.objects.create(user=user)
+    user.wishlist = Wishlist.objects.get(user=user)
+    user.save()
 
 
 def add_to_read_books(request, id):
@@ -178,23 +192,22 @@ def remove_from_read_books(request, id):
 
 def add_to_want_to_read(request, id):
     user = User.objects.get(username=request.user.username)
+    wishlist = Wishlist.objects.get(user=user)
     
-    if Wishlist.objects.filter(user=user):
-        wishlist = Wishlist.objects.get(user=user)
+    if Books.objects.filter(pk=id):
         book = Books.objects.get(pk=id)
         wishlist.books.add(book)
     else:
         create_book(id)
-        wishlist = Wishlist(user=user)
         book = Books.objects.get(pk=id)
-        wishlist.save()
         wishlist.books.add(book)
 
     return HttpResponseRedirect(reverse("index"))
 
 
 def remove_from_want_to_read(request, id):
-    user = User.objects.get(username=request.user.username)
+    wishlist = Wishlist.objects.get(user=request.user)
     book = Books.objects.get(pk=id)
-    user.books.remove(book)
+    wishlist.books.remove(book)
+
     return HttpResponseRedirect(reverse("index"))

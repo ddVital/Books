@@ -11,6 +11,7 @@
                 {% endfor %}
             </p>
 
+            {{ book.id }} {{ read_books }}
             {% if book.id in read_books %}
                 <form action="{% url 'remove_from_read_books' book.id %}" method="post">
                     {% csrf_token %}
@@ -22,7 +23,6 @@
                     <button>read</button>    
                 </form>
             {% endif %}
-
 
             {% if book.id in want_to_read %}
                 <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">

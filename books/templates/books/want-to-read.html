@@ -1,0 +1,9 @@
+{% extends "books/layout.html" %}
+
+{% block title %} Want to Read {% endblock %}
+
+{% block body %}
+    {% for book in books.books.all %}
+        {{ book }}
+    {% endfor %}
+{% endblock %}
