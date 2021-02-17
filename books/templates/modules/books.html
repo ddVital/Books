@@ -4,14 +4,9 @@
     {% for book in books.items %}
         <div class="book">
             <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}">
-            <p>{{ book.volumeInfo.title }}</p>
-            <p>
-                {% for author in book.volumeInfo.authors %}
-                    {{ author }}, 
-                {% endfor %}
-            </p>
+            <p class="title" title="{{ book.volumeInfo.title }}">{{ book.volumeInfo.title }}</p>
+            <p class="authors">{{ book.volumeInfo.authors|join:', ' }}</p>
 
-            {{ book.id }} {{ read_books }}
             {% if book.id in read_books %}
                 <form action="{% url 'remove_from_read_books' book.id %}" method="post">
                     {% csrf_token %}

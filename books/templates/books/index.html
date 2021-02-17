@@ -3,5 +3,7 @@
 {% block title %} Home {% endblock %}
 
 {% block body %}
-    {% include "modules/books.html" with books=books %}
+    <div class="books">
+        {% include "modules/books.html" with books=books %}
+    </div>
 {% endblock %}

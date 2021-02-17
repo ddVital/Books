@@ -63,7 +63,7 @@ def want_to_read(request):
     return render(request, "books/want-to-read.html", {
         "books": books_list,
     })
-    
+
 
 def login_view(request):
     if request.method == "POST":
@@ -158,7 +158,7 @@ def create_book(id):
     new_book.id = book["id"]
     new_book.cover = book["volumeInfo"]["imageLinks"]["thumbnail"]
     new_book.title = book["volumeInfo"]["title"]
-    new_book.authors = book["volumeInfo"]["authors"]
+    new_book.authors = ', '.join(book["volumeInfo"]["authors"])
     new_book.pages = book["volumeInfo"]["pageCount"]
     new_book.save()
 
