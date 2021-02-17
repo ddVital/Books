@@ -4,6 +4,20 @@
 
 {% block body %}
     <div class="book-page">
-        {{ book.volumeInfo.title }}
+        <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="" class="big-cover">
+        <p>{{ book.volumeInfo.title }}</p>
+
+        <p>{{ book.volumeInfo.description|safe }}</p>
+
+        <hr>
+
+        <h1>Book details</h1>
+        <p>Book id: {{ book.id }}</p>
+        <p>Number of pages: {{ book.volumeInfo.pageCount }}</p>
+        <p>Publisher: {{ book.volumeInfo.publisher }}</p>
+        <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
+        <p>ISBN-10: {{ book.volumeInfo.industryIdentifiers.0.identifier }}</p>
+        <p>ISBN-13: {{ book.volumeInfo.industryIdentifiers.1.identifier }}</p>
+        <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
     </div>
 {% endblock %}
