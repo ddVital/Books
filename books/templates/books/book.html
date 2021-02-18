@@ -1,23 +1,68 @@
 {% extends "books/layout.html" %}
+{% load static %}
 
 {% block title %} {{ book.volumeInfo.title }} {% endblock %}
 
 {% block body %}
     <div class="book-page">
-        <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="" class="big-cover">
-        <p>{{ book.volumeInfo.title }}</p>
+        <div class="book-volume-info">
+            <div class="book-cover">
+                {% if book.volumeInfo.imageLinks.thumbnail %}
+                    <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" class="cover">
+                {% else %}
+                    <img src="{% static 'img/NotAvailable.jpeg' %}" alt="{{ book.volumeInfo.title }}" class="cover">
+                {% endif %}
+                
+                <div class="options">
+                    {% if book.id in read_books %}
+                    <form action="{% url 'remove_from_read_books' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="option-bnt">remove read</button>    
+                    </form>
+                    {% else %}
+                    <form action="{% url 'add_to_read_books' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="option-bnt">read</button>    
+                    </form>
+                    {% endif %}
+                    
+                    {% if book.id in want_to_read %}
+                    <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="option-bnt">remove want to read</button>    
+                    </form>
+                    {% else %}
+                    <form action="{% url 'add_to_want_to_read' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="option-bnt">Want to read</button>    
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
 
-        <p>{{ book.volumeInfo.description|safe }}</p>
+            <div class="book-info">
+                <h2 class="book-title">
+                    {{ book.volumeInfo.title }}
+                    {% if book.volumeInfo.subtitle %}
+                    : {{ book.volumeInfo.subtitle }}
+                    {% endif %}
+                </h2>
+                <hr>
+                <p class="book-description">{{ book.volumeInfo.description|safe }}</p>
+            </div>
+        </div>
 
-        <hr>
-
-        <h1>Book details</h1>
-        <p>Book id: {{ book.id }}</p>
-        <p>Number of pages: {{ book.volumeInfo.pageCount }}</p>
-        <p>Publisher: {{ book.volumeInfo.publisher }}</p>
-        <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
-        <p>ISBN-10: {{ book.volumeInfo.industryIdentifiers.0.identifier }}</p>
-        <p>ISBN-13: {{ book.volumeInfo.industryIdentifiers.1.identifier }}</p>
-        <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
+        
+        <div class="book-details">
+            <hr>
+            <h3>Book details</h3>
+            <p>Book id: {{ book.id }}</p>
+            <p>Number of pages: {{ book.volumeInfo.pageCount }}</p>
+            <p>Publisher: {{ book.volumeInfo.publisher }}</p>
+            <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
+            <p>ISBN-10: {{ book.volumeInfo.industryIdentifiers.0.identifier }}</p>
+            <p>ISBN-13: {{ book.volumeInfo.industryIdentifiers.1.identifier }}</p>
+            <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
+        </div>
     </div>
 {% endblock %}
