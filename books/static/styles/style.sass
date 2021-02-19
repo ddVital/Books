@@ -6,6 +6,8 @@ $secondary-color: #3c28f0
 
 *
   outline: none
+  margin: 0
+  padding: 0
 
 body
   font-family: 'Comfortaa', cursive
@@ -20,13 +22,24 @@ header
   display: flex
   align-items: center
   justify-content: space-around
-  max-height: 3rem
+  // max-height: 3rem
+  padding: 6px
   border-bottom: 1px solid $bg-secondary-color
 
-#books-count
+  .small-profile-pic
+    width: 40px
+    height: 40px
+
+.profile-pic
+  // width: 160px
+
+.books-count
   background-color: $secondary-color
+  width: 20px
+  height: 20px
   font-size: .8rem
-  padding: 3px
+  vertical-align: top
+  padding: 2px 5px
   border-radius: 50px
 
 .search
@@ -111,3 +124,34 @@ header
 .book-details
   background-color: black
   // width: 100%
+
+.profile-page
+  display: flex
+  justify-content: space-evenly
+  align-items: center
+
+  .user-details, .user-books
+    border-radius: 20px
+  .user-details
+    background-color: $bg-secondary-color
+    text-align: center
+
+  .user-books
+    background-color: $bg-secondary-color
+    width: 60%
+
+  .container
+    margin: 5px
+    padding: 5px
+    // width: 350px
+    // height: 100px
+    // white-space: nowrap
+    // overflow: hidden
+
+  .flex
+    // overflow: hidden
+    overflow: auto
+    display: flex
+    flex-wrap: nowrap
+  .book
+    flex: 0 0 auto

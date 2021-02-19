@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Books, User, Wishlist
 
+# user = User.objects.get(username=request.user.username)
 
 # index function
 def index(request):
@@ -21,7 +22,7 @@ def index(request):
 
 
 def book(request, id):
-    return render(request, 'books/book.html', {"book": get_specific_book(id)})
+    return render(request, 'books/book-page.html', {"book": get_specific_book(id)})
 
 
 def read_books(user):
@@ -153,6 +154,23 @@ def register(request):
             return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auth/register.html")
+
+
+def profile(request):
+    user = User.objects.get(username=request.user.username)
+    return render(request, "books/profile.html", {
+        "books": user.books.all(),
+        "want_to_read": user.wishlist.books.all(),
+        "total_read_pages": total_read_pages(user)
+    })
+
+
+def total_read_pages(user):
+    total_read_pages = 0
+    for book in user.books.all():
+        total_read_pages += book.pages
+    
+    return total_read_pages
 
 
 def create_book(id):

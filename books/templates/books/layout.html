@@ -15,10 +15,17 @@
     <header>
         <h1>Logo</h1>
         <a href="">Settings</a>
-        <a href="">Books</a>
-        <a href="{% url 'want_to_read' %}">Want to read <span id="books-count">{{ user.wishlist.books.count }}</span></a>
+        <a href="{% url 'want_to_read' %}">Want to read <span class="books-count">{{ user.wishlist.books.count }}</span></a>
         
-        <i class="fa fa-user"></i>
+        {% if book.volumeInfo.imageLinks.thumbnail %}
+            <a href="{% url 'profile' %}">
+                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" class="small-profile-pic">
+            </a>
+        {% else %}
+            <a href="{% url 'profile' %}">
+                <img src="{% static 'img/profile.webp' %}" alt="{{ book.volumeInfo.title }}" class="small-profile-pic">
+            </a>
+        {% endif %}
     </header>
     {% block body %}
     {% endblock %}

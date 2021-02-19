@@ -1,0 +1,40 @@
+{% load static %}
+
+{% for book in books %}
+    <div class="book">
+        {% if book.cover %}
+            <img src="{{ book.cover }}" alt="{{ book.volumeInfo.title }}" class="cover">
+        {% else %}
+            <img src="{% static 'img/NotAvailable.jpeg' %}" alt="{{ book.volumeInfo.title }}" class="cover">
+        {% endif %}
+
+        <a href="{% url 'book' book.id %}" class="title" title="{{ book.title }}">{{ book.title }}</a>
+        <p class="authors">{{ book.authors }}</p>
+
+        <div class="book-options">
+            {% if book.id in read_books %}
+                <form action="{% url 'remove_from_read_books' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>remove read</button>    
+                </form>
+            {% else %}
+                <form action="{% url 'add_to_read_books' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>read</button>    
+                </form>
+            {% endif %}
+
+            {% if book.id in want_to_read %}
+                <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>remove want to read</button>    
+                </form>
+            {% else %}
+                <form action="{% url 'add_to_want_to_read' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button>Want to read</button>    
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

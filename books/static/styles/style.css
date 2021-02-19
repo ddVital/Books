@@ -1,5 +1,7 @@
 * {
   outline: none;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -22,14 +24,22 @@ header {
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  max-height: 3rem;
+  padding: 6px;
   border-bottom: 1px solid #444444;
 }
 
-#books-count {
+header .small-profile-pic {
+  width: 40px;
+  height: 40px;
+}
+
+.books-count {
   background-color: #3c28f0;
+  width: 20px;
+  height: 20px;
   font-size: .8rem;
-  padding: 3px;
+  vertical-align: top;
+  padding: 2px 5px;
   border-radius: 50px;
 }
 
@@ -138,5 +148,51 @@ header {
 
 .book-details {
   background-color: black;
+}
+
+.profile-page {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.profile-page .user-details, .profile-page .user-books {
+  border-radius: 20px;
+}
+
+.profile-page .user-details {
+  background-color: #444444;
+  text-align: center;
+}
+
+.profile-page .user-books {
+  background-color: #444444;
+  width: 60%;
+}
+
+.profile-page .container {
+  margin: 5px;
+  padding: 5px;
+}
+
+.profile-page .flex {
+  overflow: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.profile-page .book {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
 }
 /*# sourceMappingURL=style.css.map */

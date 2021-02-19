@@ -1,0 +1,39 @@
+{% extends "books/layout.html" %}
+{% load static %}
+
+{% block title %} {{ user.username }} {% endblock %}
+
+{% block body %}
+    <div class="profile-page">
+        <div class="user-details">
+            {% if book.volumeInfo.imageLinks.thumbnail %}
+                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" class="profile-pic">
+            {% else %}
+                <img src="{% static 'img/profile.webp' %}" alt="{{ book.volumeInfo.title }}" class="profile-pic">
+            {% endif %}
+
+
+            <h1>David Vital</h1>
+            <p>{{ user.username }}</p>
+
+            <div>
+                <p>Read books</p>
+                <p>Total read pages <span>{{ total_read_pages }}</span></p>
+
+            </div>
+
+            <button>Settings</button>
+        </div>
+
+        <div class="user-books">
+            <p>Read books:</p>
+            <div class="container flex">
+                {% include "modules/db-book.html" with books=books %}
+            </div>
+            <p>Want to Read:</p>
+            <div class="container flex">
+                {% include "modules/db-book.html" with books=want_to_read %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
