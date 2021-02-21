@@ -19,7 +19,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "books/media")
 
 MEDIA_URL = "/"
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -29,9 +28,9 @@ SECRET_KEY = 'b#7k$*a@%6g(8+q-w-=qw7%_js#tp0r-tfrkmtv%s0zh#he1#o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.104']
 
-
+# ALLOWED_HOSTS = ['192.168.1.104']
 # Application definition
 
 INSTALLED_APPS = [

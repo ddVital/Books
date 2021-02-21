@@ -3,40 +3,55 @@
 {% if books %}
     {% for book in books.items %}
         <div class="book">
-            {% if book.volumeInfo.imageLinks.thumbnail %}
-                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" class="cover">
-            {% else %}
-                <img src="{% static 'img/NotAvailable.jpeg' %}" alt="{{ book.volumeInfo.title }}" class="cover">
-            {% endif %}
-
-            <a href="{% url 'book' book.id %}" class="title" title="{{ book.volumeInfo.title }}">{{ book.volumeInfo.title }}</a>
-            <!-- <p class="title">{{ book.volumeInfo.title }}</p> -->
-            <p class="authors">{{ book.volumeInfo.authors|join:', ' }}</p>
-
-            <div class="book-options">
-                {% if book.id in read_books %}
-                    <form action="{% url 'remove_from_read_books' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button>remove read</button>    
-                    </form>
+            <div>
+                {% if book.volumeInfo.imageLinks.thumbnail %}
+                    <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" class="cover">
                 {% else %}
-                    <form action="{% url 'add_to_read_books' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button>read</button>    
-                    </form>
+                    <img src="{% static 'img/NotAvailable.jpeg' %}" alt="{{ book.volumeInfo.title }}" class="cover">
                 {% endif %}
+                
+                <div class="book-options" id="book-{{ book.id}}-options">
+                    {% if book.id in read_books %}
+                        <form action="{% url 'remove_from_read_books' book.id %}" method="post">
+                            {% csrf_token %}
+                            <button title="Remove from read books">
+                                <i class="far fa-books"></i>
+                            </button>    
+                        </form>
+                    {% else %}
+                        <form action="{% url 'add_to_read_books' book.id %}" method="post">
+                            {% csrf_token %}
+                            <button title="Add to read books">
+                                <i class="fas fa-books"></i>
+                            </button>
+                        </form>
+                    {% endif %}
+    
+                    {% if book.id in want_to_read %}
+                        <div>
+                            <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">
+                                {% csrf_token %}
+                                <button title="Remove from want to read">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div>
+                            <form action="{% url 'add_to_want_to_read' book.id %}" method="post">
+                                {% csrf_token %}
+                                    <button title="Add to want to read">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
 
-                {% if book.id in want_to_read %}
-                    <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button>remove want to read</button>    
-                    </form>
-                {% else %}
-                    <form action="{% url 'add_to_want_to_read' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button>Want to read</button>    
-                    </form>
-                {% endif %}
+            <div class="book-{{ book.id }}-info">
+                <a href="{% url 'book' book.id %}" class="title" title="{{ book.volumeInfo.title }}">{{ book.volumeInfo.title }}</a>
+                <p class="authors">{{ book.volumeInfo.authors|join:', ' }}</p>
             </div>
         </div>
     {% endfor %}

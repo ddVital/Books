@@ -1,24 +1,41 @@
-{% extends "books/layout.html" %}
 {% load static %}
-
-
-{% block title %}
-    Login
-{% endblock %}
-
-{% block body %}
-    <div id="login-and-register">
-        <h1>Register</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <title>Register</title>
+</head>
+<body>
+    <div class="auth">
         <form action="{% url 'register' %}" method="POST">
+            <h1>Register</h1>
             {% csrf_token %}
-            <input autofocus class="input-fields" type="text" name="username" placeholder="Username" autocomplete="off">
-            <input class="input-fields" type="email" name="email" placeholder="email" autocomplete="off">
-            <input class="input-fields" type="password" name="password" placeholder="Password">
-            <input class="input-fields" type="password" name="confirm-password" placeholder=" Confirm Password">
-            <span>{{ message }}</span>
-            <input class="submit-bnt" type="submit" id="register-bnt" value="Register">
+            <div>
+                <input type="text" name="username" class="login-input" placeholder="Username" autocomplete="off" autofocus>
+            </div>
+            <div>
+                <input type="email" name="email" class="login-input" placeholder="email" autocomplete="off">
+            </div>
+            <div>
+                <input type="password" name="password" class="login-input" placeholder="Password">
+            </div>
+            <div>
+                <input type="password" name="confirm-password" class="login-input" placeholder=" Confirm Password">
+            </div>
+            <div>
+                <span class="error-msg">{{ message }}</span>
+            </div>
+            <div>
+                <input type="submit" value="Register" class="submit-bnt">
+            </div>
 
-            <span>Have an account? <a href="{% url 'login' %}">Log in</a></span>
+            <span>Have an account? <a href="{% url 'login' %}" class="special-link">Log in</a></span>
         </form>
     </div>
-{% endblock %}
+</body>
+</html>

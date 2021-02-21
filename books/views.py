@@ -2,16 +2,15 @@ import os, re, requests
 from django.shortcuts import render
 
 from django.db import IntegrityError
-from django import forms
 from django.contrib.auth import authenticate, update_session_auth_hash, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from .models import Books, User, Wishlist
 
-# user = User.objects.get(username=request.user.username)
 
 # index function
+@login_required(login_url='/login')
 def index(request):
     user = User.objects.get(username=request.user.username)
     return render(request, 'books/index.html', {
@@ -21,6 +20,7 @@ def index(request):
     })
 
 
+@login_required(login_url='/login')
 def book(request, id):
     return render(request, 'books/book-page.html', {"book": get_specific_book(id)})
 
@@ -52,6 +52,7 @@ def get_specific_book(id):
     return data
 
 
+@login_required(login_url='/login')
 def search(request):
     search = request.GET.get('q')
     user = User.objects.get(username=request.user.username)
@@ -62,12 +63,17 @@ def search(request):
     })
 
 
+@login_required(login_url='/login')
 def want_to_read(request):
     user = User.objects.get(username=request.user.username)
     books_list = Wishlist.objects.get(user=user)
     return render(request, "books/want-to-read.html", {
         "books": books_list,
     })
+
+
+def edit_profile(request):
+    return render(request, "books/edit-profile.html")
 
 
 def login_view(request):
@@ -95,32 +101,6 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 
-def password_check(password):
-    """
-    Verify the strength of 'password'
-    """
-
-    # calculating the length
-    length_error = len(password) < 8
-
-    # searching for digits
-    digit_error = re.search(r"\d", password) is None
-
-    # searching for uppercase
-    uppercase_error = re.search(r"[A-Z]", password) is None
-
-    # searching for lowercase
-    lowercase_error = re.search(r"[a-z]", password) is None
-
-    # searching for symbolswishlist=''
-    symbol_error = re.search(r"\W", password) is None
-
-    # overall result
-    password_ok = not ( length_error or digit_error or uppercase_error or lowercase_error or symbol_error )
-
-    return password_ok
-
-
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -141,21 +121,31 @@ def register(request):
             })
 
         # Attempt to create new user
-        if password_check(password):
-            try:
-                user = User.objects.create_user(username.lower(), email.lower(), password)
-                user.save()
-                create_user_wishlist(user)
-            except IntegrityError:
+        if len(username) >= 4 and len(username) <= 16:
+            if len(password) >= 8:
+                try:
+                    user = User.objects.create_user(username.lower(), email.lower(), password)
+                    user.save()
+                    create_user_wishlist(user)
+                except IntegrityError:
+                    return render(request, "auth/register.html", {
+                        "message": "Username already taken."
+                    })
+                login(request, user)
+                return HttpResponseRedirect(reverse("index"))
+            else:
                 return render(request, "auth/register.html", {
-                    "message": "Username already taken."
+                    "message": "Password must be at least 8 characters"
                 })
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "auth/register.html", {
+                "message": "Username must contain between 4 and 16 characters"
+            })
     else:
         return render(request, "auth/register.html")
 
 
+@login_required(login_url='/login')
 def profile(request):
     user = User.objects.get(username=request.user.username)
     return render(request, "books/profile.html", {

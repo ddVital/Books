@@ -5,29 +5,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} {% endblock %}</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <title>{% block title %} {% endblock %}</title>
 </head>
-<body>
+<body onresize="addMobileMenu">
     <header>
-        <h1>Logo</h1>
-        <a href="">Settings</a>
-        <a href="{% url 'want_to_read' %}">Want to read <span class="books-count">{{ user.wishlist.books.count }}</span></a>
-        
-        {% if book.volumeInfo.imageLinks.thumbnail %}
-            <a href="{% url 'profile' %}">
-                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" class="small-profile-pic">
-            </a>
-        {% else %}
-            <a href="{% url 'profile' %}">
-                <img src="{% static 'img/profile.webp' %}" alt="{{ book.volumeInfo.title }}" class="small-profile-pic">
-            </a>
-        {% endif %}
+        <nav class="menu">
+            <h1>Logo</h1>
+            <form action="{% url 'search' %}" method="get">
+                <div class="search">
+                    <input type="search" name="q" class="search-input" placeholder="Search book, author, isbn..." autocomplete="off">
+                    <!-- <input type="submit" value="Search" class="search-bnt"> -->
+                    <button type="submit" class="search-bnt">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <ul>
+                <li>
+                    <a href="{% url 'index' %}">Home</a>
+                </li>
+                <li>
+                    <a href="">Books</a>
+                </li>
+                <li>
+                    <a href="{% url 'want_to_read' %}">Want to read <span class="books-count">{{ user.wishlist.books.count }}</span></a>
+                </li>
+            </ul>
+            
+            {% if book.volumeInfo.imageLinks.thumbnail %}
+                <a href="{% url 'profile' %}">
+                    <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" class="small-profile-pic">
+                </a>
+            {% else %}
+                <a href="{% url 'profile' %}">
+                    <img src="{% static 'img/profile.webp' %}" alt="{{ book.volumeInfo.title }}" class="small-profile-pic">
+                </a>
+            {% endif %}
+        </nav>
     </header>
     {% block body %}
     {% endblock %}
+
+    <script>
+        // screenSize.addListener("onresize", addMobileMenu) // Attach listener function on state changes
+    </script>
 </body>
 </html>

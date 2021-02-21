@@ -3,13 +3,7 @@
 {% block title %} Home {% endblock %}
 
 {% block body %}
-    <div class="search">
-        <form action="{% url 'search' %}" method="get">
-            <input type="search" name="q" class="search-input" placeholder="Search book, author, isbn..." autocomplete="off">
-            <input type="submit" value="Search" class="search-bnt">
-        </form>
-    </div>
-
+    
     <p>Books: </p>
     <div class="books">
         {% include "modules/books.html" with books=books %}
