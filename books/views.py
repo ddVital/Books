@@ -1,8 +1,7 @@
 import os, re, requests
 from django.shortcuts import render
-
 from django.db import IntegrityError
-from django.contrib.auth import authenticate, update_session_auth_hash, login, logout
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -17,12 +16,19 @@ def index(request):
         "books": API_request("why we sleep"),
         "read_books": read_books(user),
         "want_to_read": want_to_read_list(user),
+        "total_read_pages": total_read_pages(user)
     })
 
 
 @login_required(login_url='/login')
 def book(request, id):
-    return render(request, 'books/book-page.html', {"book": get_specific_book(id)})
+    user = User.objects.get(username=request.user.username)
+    
+    return render(request, 'books/book-page.html', {
+        "book": get_specific_book(id),
+        "read_books": read_books(user),
+        "want_to_read": want_to_read_list(user),
+    })
 
 
 def read_books(user):
@@ -57,9 +63,11 @@ def search(request):
     search = request.GET.get('q')
     user = User.objects.get(username=request.user.username)
 
-    return render(request, 'books/index.html', {
-        "books": API_request(search),
+    return render(request, 'books/search.html', {
+        "results": API_request(search),
         "read_books": read_books(user),
+        "total_read_pages": total_read_pages(user),
+        "search": search
     })
 
 
@@ -69,10 +77,33 @@ def want_to_read(request):
     books_list = Wishlist.objects.get(user=user)
     return render(request, "books/want-to-read.html", {
         "books": books_list,
+        "read_books": read_books(user),
+        "want_to_read": want_to_read_list(user),
+    })
+
+
+@login_required(login_url='/login')
+def books(request):
+    user = User.objects.get(username=request.user.username)
+    return render(request, "books/books.html", {
+        "books": user.books.all(),
+        "read_books": read_books(user),
+        "want_to_read": want_to_read_list(user),
     })
 
 
 def edit_profile(request):
+    user = User.objects.get(username=request.user.username)
+
+    if request.method == "POST":
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.username = request.POST["username"]
+        user.email = request.POST["email"]
+        user.save()
+
+        return HttpResponseRedirect(reverse("profile"))
+
     return render(request, "books/edit-profile.html")
 
 
@@ -99,6 +130,11 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+def delete_account(request):
+    user = User.objects.get(username=request.user.username)
+    user.delete()
+    return HttpResponseRedirect(reverse("login_view"))
 
 
 def register(request):
@@ -145,16 +181,6 @@ def register(request):
         return render(request, "auth/register.html")
 
 
-@login_required(login_url='/login')
-def profile(request):
-    user = User.objects.get(username=request.user.username)
-    return render(request, "books/profile.html", {
-        "books": user.books.all(),
-        "want_to_read": user.wishlist.books.all(),
-        "total_read_pages": total_read_pages(user)
-    })
-
-
 def total_read_pages(user):
     total_read_pages = 0
     for book in user.books.all():
@@ -168,10 +194,20 @@ def create_book(id):
     new_book = Books()
     
     new_book.id = book["id"]
-    new_book.cover = book["volumeInfo"]["imageLinks"]["thumbnail"]
+    try:
+        new_book.cover = book["volumeInfo"]["imageLinks"]["thumbnail"]
+    except:
+        print('Book has no cover')
     new_book.title = book["volumeInfo"]["title"]
-    new_book.authors = ', '.join(book["volumeInfo"]["authors"])
-    new_book.pages = book["volumeInfo"]["pageCount"]
+    try:
+        new_book.authors = ', '.join(book["volumeInfo"]["authors"])
+    except:
+        print('authors not available')
+    try:
+        new_book.pages = book["volumeInfo"]["pageCount"]
+    except:
+        print('page count not available')
+
     new_book.save()
 
 

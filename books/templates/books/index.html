@@ -3,8 +3,16 @@
 {% block title %} Home {% endblock %}
 
 {% block body %}
-    
-    <p>Books: </p>
+    <div class="user-info">
+        <p style="border-right: 2px solid #444444;">
+            {{ total_read_pages }}
+            <span>Read pages</span>
+        </p>
+        <p>
+            {{ user.books.count }}
+            <span>Read books</span>
+        </p>
+    </div>
     <div class="books">
         {% include "modules/books.html" with books=books %}
     </div>

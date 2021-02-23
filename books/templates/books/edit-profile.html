@@ -1,8 +1,34 @@
 {% extends "books/layout.html" %}
 
-{% block title %} Want to Read {% endblock %}
+{% block title %} edit @{{ user.username }} {% endblock %}
 
 {% block body %}
-    <a href="{% url 'logout' %}">logout</a>
-    <a href="">Delete account</a>
+    <div class="edit-profile">
+        <form action="{% url 'edit_profile' %}" method="post">
+            {% csrf_token %}
+            <h1>Edit</h1>
+            <div>
+                <input type="text" name="first_name" class="input" value="{{ user.first_name }}" placeholder="first name">
+            </div>
+            <div>
+                <input type="text" name="last_name" class="input" value="{{ user.last_name }}" placeholder="last name">
+            </div>
+            <div>
+                <input type="text" name="username" class="input" value="{{ user.username }}" placeholder="username">
+            </div>
+            <div>
+                <input type="email" name="email" class="input" value="{{ user.email }}" placeholder="email">
+            </div>
+            <button class="submit-bnt">Save</button>
+
+            <div style="text-align: left;">
+                <div style="margin: 10px;">
+                    <a href="{% url 'logout' %}">logout</a>
+                </div>
+                <div style="margin: 10px;">
+                    <a href="{% url 'delete_account' %}">Delete account</a>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

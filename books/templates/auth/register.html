@@ -16,16 +16,16 @@
             <h1>Register</h1>
             {% csrf_token %}
             <div>
-                <input type="text" name="username" class="login-input" placeholder="Username" autocomplete="off" autofocus>
+                <input type="text" name="username" class="input" placeholder="Username" autocomplete="off" autofocus>
             </div>
             <div>
-                <input type="email" name="email" class="login-input" placeholder="email" autocomplete="off">
+                <input type="email" name="email" class="input" placeholder="email" autocomplete="off">
             </div>
             <div>
-                <input type="password" name="password" class="login-input" placeholder="Password">
+                <input type="password" name="password" class="input" placeholder="Password">
             </div>
             <div>
-                <input type="password" name="confirm-password" class="login-input" placeholder=" Confirm Password">
+                <input type="password" name="confirm-password" class="input" placeholder=" Confirm Password">
             </div>
             <div>
                 <span class="error-msg">{{ message }}</span>

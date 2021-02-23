@@ -12,57 +12,98 @@
                 {% else %}
                     <img src="{% static 'img/NotAvailable.jpeg' %}" alt="{{ book.volumeInfo.title }}" class="cover">
                 {% endif %}
-                
-                <div class="options">
-                    {% if book.id in read_books %}
-                    <form action="{% url 'remove_from_read_books' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="option-bnt">remove read</button>    
-                    </form>
-                    {% else %}
-                    <form action="{% url 'add_to_read_books' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="option-bnt">read</button>    
-                    </form>
-                    {% endif %}
-                    
-                    {% if book.id in want_to_read %}
-                    <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="option-bnt">remove want to read</button>    
-                    </form>
-                    {% else %}
-                    <form action="{% url 'add_to_want_to_read' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="option-bnt">Want to read</button>    
-                    </form>
-                    {% endif %}
-                </div>
             </div>
 
             <div class="book-info">
-                <h2 class="book-title">
+                <h3 class="book-title">
                     {{ book.volumeInfo.title }}
                     {% if book.volumeInfo.subtitle %}
                     : {{ book.volumeInfo.subtitle }}
                     {% endif %}
-                </h2>
-                <hr>
-                <p class="book-description">{{ book.volumeInfo.description|safe }}</p>
-            </div>
-        </div>
+                </h3>
 
+                <p class="info">{{ book.volumeInfo.authors|join:', ' }} (author)</p>
+                <p class="info">{{ book.volumeInfo.publisher }} (publisher)</p>
+                <a href="{{ book.saleInfo.buyLink }}" class="info buy-link">Buy on play store</a>
+            </div>
+
+            <div class="options">
+                {% if book.id in read_books %}
+                    <form action="{% url 'remove_from_read_books' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button title="Remove from read books">
+                            Read
+                            <i class="far fa-check"></i>
+                        </button>    
+                    </form>
+                {% else %}
+                    <form action="{% url 'add_to_read_books' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button title="Add to read books">
+                            Read
+                        </button>
+                    </form>
+                {% endif %}
+
+                    {% if book.id in want_to_read %}
+                    <form action="{% url 'remove_from_want_to_read' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button title="Remove from want to read">
+                            Want to read 
+                            <i class="far fa-check"></i>
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'add_to_want_to_read' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button title="Add to want to read">Want to read</button>
+                    </form>
+                    {% endif %}
+            </div>
+
+            <!-- <div></div> -->
+            <p class="book-description">{{ book.volumeInfo.description|safe }}</p>
+        </div>
+        
         
         <div class="book-details">
             <hr>
+
             <h3>Book details</h3>
-            <p>Book id: {{ book.id }}</p>
-            <p>Number of pages: {{ book.volumeInfo.pageCount }}</p>
-            <p>Publisher: {{ book.volumeInfo.publisher }}</p>
-            <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
-            <p>ISBN-10: {{ book.volumeInfo.industryIdentifiers.0.identifier }}</p>
-            <p>ISBN-13: {{ book.volumeInfo.industryIdentifiers.1.identifier }}</p>
-            <p>Published date: {{ book.volumeInfo.publishedDate }}</p>
+
+
+            <table class="table table-dark">
+                <tbody>
+                    <tr>
+                        <th scope="row">Book id</th>
+                        <td colspan="2" class="table-active">{{ book.id }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Number of</th>
+                        <td colspan="2" class="table-active">{{ book.volumeInfo.pageCount }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Publisher:</th>
+                        <td colspan="2" class="table-active">{{ book.volumeInfo.publisher }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Published date</th>
+                        <td colspan="2" class="table-active">{{ book.volumeInfo.publishedDate }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ISBN-10</th>
+                        <td colspan="2" class="table-active">{{ book.volumeInfo.industryIdentifiers.0.identifier }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ISBN-13</th>
+                        <td colspan="2" class="table-active">{{ book.volumeInfo.industryIdentifiers.1.identifier }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Published date</th>
+                        <td colspan="2" class="table-active">{{ book.volumeInfo.publishedDate }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,10 @@
+{% extends "books/layout.html" %}
+
+{% block title %} Books {% endblock %}
+
+{% block body %}
+    <h2 class="page-title">Read Books <span class="books-count">{{ user.books.count }}</span></h2>
+    <div class="books">
+        {% include "modules/db-books.html" with books=books %}
+    </div>
+{% endblock %}

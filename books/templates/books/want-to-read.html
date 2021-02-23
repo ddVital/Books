@@ -3,7 +3,8 @@
 {% block title %} Want to Read {% endblock %}
 
 {% block body %}
-    {% for book in books.books.all %}
-        {{ book }}
-    {% endfor %}
+    <h2 class="page-title">Want to read <span class="books-count">{{ user.wishlist.books.count }}</span></h2>
+    <div class="books">
+        {% include "modules/db-books.html" with books=books.books.all %}
+    </div>
 {% endblock %}

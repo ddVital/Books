@@ -1,0 +1,14 @@
+{% extends "books/layout.html" %}
+
+{% block title %} Search {% endblock %}
+
+{% block body %}
+    <div class="books">
+        {% if 1 == 2 %}
+            {% include "modules/books.html" with books=results %}
+        {% else %}
+            <p>No results for {{ search }}</p>
+        {% endif %}
+    </div>
+        
+{% endblock %}
