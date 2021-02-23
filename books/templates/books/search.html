@@ -1,14 +1,17 @@
 {% extends "books/layout.html" %}
+{% load static %}
 
 {% block title %} Search {% endblock %}
 
 {% block body %}
-    <div class="books">
-        {% if 1 == 2 %}
+    {% if results %}
+        <div class="books">
             {% include "modules/books.html" with books=results %}
-        {% else %}
+        </div>
+    {% else %}
+        <div class="not-found">
+            <img src="{% static 'img/empty.svg' %}" alt="no results">
             <p>No results for {{ search }}</p>
-        {% endif %}
-    </div>
-        
+        </div>        
+    {% endif %}
 {% endblock %}

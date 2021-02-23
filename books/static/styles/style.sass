@@ -32,6 +32,9 @@ header
     padding: 6px
     border-bottom: 1px solid $bg-secondary-color
 
+  .logo
+    width: 32px
+ 
   .mobile-menu
     display: none
   
@@ -239,6 +242,16 @@ table
 .error-msg
   color: $error-color
 
+.not-found
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  height: 70vh
+  img
+    width: 200px
+
+
 $break-point: 600px
 
 @media screen and ( max-width: $break-point )
@@ -247,7 +260,7 @@ $break-point: 600px
       justify-content: space-between
       margin: 10px
 
-      .small-profile-pic
+      .user
         display: none
 
       ul
