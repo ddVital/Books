@@ -142,6 +142,12 @@ def delete_account(request):
     return HttpResponseRedirect(reverse("login_view"))
 
 
+def create_user_wishlist(user):
+    Wishlist.objects.create(user=user)
+    user.wishlist = Wishlist.objects.get(user=user)
+    user.save()
+    
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -214,12 +220,6 @@ def create_book(id):
         print('page count not available')
 
     new_book.save()
-
-
-def create_user_wishlist(user):
-    Wishlist.objects.create(user=user)
-    user.wishlist = Wishlist.objects.get(user=user)
-    user.save()
 
 
 def add_to_read_books(request, id):
