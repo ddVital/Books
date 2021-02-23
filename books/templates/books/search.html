@@ -4,14 +4,14 @@
 {% block title %} Search {% endblock %}
 
 {% block body %}
-    {% if results %}
+    {% if results.totalItems %}
         <div class="books">
             {% include "modules/books.html" with books=results %}
         </div>
     {% else %}
         <div class="not-found">
             <img src="{% static 'img/empty.svg' %}" alt="no results">
-            <p>No results for {{ search }}</p>
+            <p>No results for '{{ search }}'</p>
         </div>        
     {% endif %}
 {% endblock %}

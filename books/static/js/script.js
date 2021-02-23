@@ -6,7 +6,6 @@ var screenWidth = window.innerWidth;
 window.addEventListener("resize", addMobileMenu);
 
 function addMobileMenu() {
-    console.log(window.innerWidth);
     const header = document.querySelector('header');
     const mobileMenu = document.querySelector('.mobile-menu');
 

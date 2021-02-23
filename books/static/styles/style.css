@@ -25,7 +25,7 @@ header .menu {
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  padding: 6px;
+  padding: 12px;
   border-bottom: 1px solid #444444;
 }
 
@@ -58,6 +58,24 @@ header li {
 
 .page-title {
   margin: 20px;
+}
+
+.error-page {
+  margin: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 60vh;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.error-page h1, .error-page p {
+  margin: 20px 0;
 }
 
 .books-count {

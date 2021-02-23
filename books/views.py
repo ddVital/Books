@@ -13,7 +13,7 @@ from .models import Books, User, Wishlist
 def index(request):
     user = User.objects.get(username=request.user.username)
     return render(request, 'books/index.html', {
-        "books": API_request("why we sleep"),
+        "books": Books.objects.all(),
         "read_books": read_books(user),
         "want_to_read": want_to_read_list(user),
         "total_read_pages": total_read_pages(user)
@@ -24,11 +24,16 @@ def index(request):
 def book(request, id):
     user = User.objects.get(username=request.user.username)
     
-    return render(request, 'books/book-page.html', {
-        "book": get_specific_book(id),
-        "read_books": read_books(user),
-        "want_to_read": want_to_read_list(user),
-    })
+    try:
+        return render(request, 'books/book-page.html', {
+            "book": get_specific_book(id),
+            "read_books": read_books(user),
+            "want_to_read": want_to_read_list(user),
+        })
+    except Exception as e:
+        return render(request, 'books/error.html', {
+            "error": e.__str__()
+        })
 
 
 def read_books(user):

@@ -1,11 +1,13 @@
 {% extends "books/layout.html" %}
 
-{% block title %} Home {% endblock %}
+{% block title %} ERROR! {% endblock %}
 
 {% block body %}
     <div class="error-page">
-        <h1>ERROR!</h1>
-        <hr>
-        <p>{{ error }}</p>
+        <div>
+            <h1>ERROR!</h1>
+            <hr>
+            <p>{{ error }}</p>
+        </div>
     </div>
 {% endblock %}
