@@ -1,4 +1,4 @@
-import os, re, requests
+import requests
 from django.shortcuts import render
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout

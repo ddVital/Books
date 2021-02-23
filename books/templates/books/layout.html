@@ -1,7 +1,7 @@
 {% load static %}
 
 {% url 'index' as index %}
-{% url 'want_to_read' as want_to_read %}
+{% url 'want_to_read' as url_want_to_read %}
 {% url 'books' as books_page %}
 {% url 'edit_profile' as profile %}
 
@@ -10,13 +10,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{% static 'img/favicon.ico' }" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' }" type="image/x-icon">
+    
     <script src="{% static 'js/script.js' %}"></script>
-
     <script>
         const mobileMenuContent = `
                 <nav class="mobile-menu">
@@ -28,7 +29,7 @@
                         <i class="fas fa-books"></i>
                         <span>Books</span>
                     </a>
-                    <a href="{% url 'want_to_read' %}" class="mobile-menu-items {% if request.path == want_to_read %}active{% endif %}">
+                    <a href="{% url 'want_to_read' %}" class="mobile-menu-items {% if request.path == url_want_to_read %}active{% endif %}">
                         <i class="fas fa-list"></i>
                         <span>Wishlist</span>
                     </a>
