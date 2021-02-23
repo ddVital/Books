@@ -22,7 +22,6 @@ class Wishlist(models.Model):
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(upload_to="media/", default=None, null=True, blank=True)
     books = models.ManyToManyField(Books)
     wishlist = models.ForeignKey(Wishlist, null=True, on_delete=models.CASCADE, related_name="books_wishlist")
 
