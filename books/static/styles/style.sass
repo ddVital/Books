@@ -21,9 +21,6 @@ a
   color: white
   text-decoration: none
 
-.active
-  color: $secondary-color
-
 header
   .menu
     display: flex
@@ -39,8 +36,9 @@ header
     display: none
   
   .mobile-menu-items
+    color: #d3d3d3
     &:hover
-      background-color: red
+      color: white
 
   .small-profile-pic
     width: 40px
@@ -279,7 +277,7 @@ $break-point: 600px
       .search-bnt
         border-radius: 0px 20px 20px 0px
         padding: .5rem
-
+    
     .mobile-menu
       background-color: $bg-color
       border-top: 1px solid $bg-secondary-color
@@ -292,13 +290,19 @@ $break-point: 600px
       bottom: 0
 
       a
+        color: #929292
         display: flex
         flex-direction: column
         align-items: center
         white-space: nowrap
         flex-grow: 1
+        width: 25%
         span
-          font-size: 1rem
+          font-size: .8rem
+
+      .active
+          color: white
+      // color: red
 
   .books
     justify-content: space-evenly
